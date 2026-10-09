@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlayTale AI – Gamified Learning & AI Companion</title>
+  <meta name="description" content="PlayTale AI is an educational gamification Android app featuring interactive learning zones, TaleBot AI tutor, virtual pet Buddy, and mini-games.">
+  <meta name="theme-color" content="#4F46E5">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4F46E5;
+      --primary-hover: #4338CA;
+      --secondary: #EC4899;
+      --accent: #F59E0B;
+      --bg: #0F172A;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(79, 70, 229, 0.25) 0%, transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 50% 85%, rgba(245, 158, 11, 0.15) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+    header {
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(15, 23, 42, 0.85);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #FFF;
+      text-decoration: none;
+    }
+    .logo-badge {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+    }
+    .header-links {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .github-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .github-link:hover {
+      color: #FFF;
+    }
+    main {
+      flex: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+      width: 100%;
+    }
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem 4rem;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(79, 70, 229, 0.2);
+      border: 1px solid rgba(79, 70, 229, 0.4);
+      color: #A5B4FC;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.35rem 1rem;
+      border-radius: 9999px;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, #818CF8, #F472B6, #FBBF24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 2.5rem;
+    }
+    .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      padding: 0.95rem 1.85rem;
+      border-radius: 14px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #4F46E5, #6366F1);
+      color: #FFF;
+      box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.5);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -5px rgba(79, 70, 229, 0.65);
+      background: linear-gradient(135deg, #4338CA, #4F46E5);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(8px);
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin: 3rem 0;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 1.75rem;
+      backdrop-filter: blur(16px);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(129, 140, 248, 0.4);
+    }
+    .card-icon {
+      font-size: 2.25rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .install-box {
+      margin-top: 4rem;
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 2.5rem;
+      position: relative;
+    }
+    .install-box h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #FFF;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+    .step-item h4 {
+      font-size: 1.05rem;
+    }
+    .step-item p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    footer {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      border-top: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #A5B4FC;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="#" class="logo">
+      <div class="logo-badge">🎮</div>
+      <span>PlayTale AI</span>
+    </a>
+    <div class="header-links">
+      <a href="https://github.com/bsrividya78/playtale-ai-game" target="_blank" class="github-link">
+        <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        GitHub
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="badge">✨ Android Educational Game</div>
+      <h1>Level Up Your Learning With <span>PlayTale AI</span></h1>
+      <p>An interactive educational universe featuring tailored quiz quests, Gemini-powered TaleBot tutoring, a virtual pet companion, and rewarding arcade mini-games.</p>
+      
+      <div class="cta-group">
+        <a href="https://github.com/bsrividya78/playtale-ai-game/releases/latest" class="btn btn-primary" target="_blank">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download Android APK
+        </a>
+        <a href="https://github.com/bsrividya78/playtale-ai-game" class="btn btn-secondary" target="_blank">
+          View Repository
+        </a>
+        <button id="pwaInstallBtn" class="btn btn-secondary" style="display: none;">
+          📱 Install Web App (PWA)
+        </button>
+      </div>
+    </section>
+
+    <div class="features-grid">
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <h3>TaleBot AI Tutor</h3>
+        <p>Personalized encouragement and pedagogical hints powered by Gemini AI when you get stuck on tough questions.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🐶</div>
+        <h3>Virtual Pet Buddy</h3>
+        <p>Your lovable study partner! Earn coins through quizzes to feed, cheer up, and level up Buddy's happiness.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">📚</div>
+        <h3>4 Learning Zones</h3>
+        <p>Explore Code, Math, Science, and World Explorer zones with progressive difficulty and voice narration (TTS).</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🪙</div>
+        <h3>Coin Catcher Game</h3>
+        <p>Score 3+ on quizzes to unlock the thrilling Coin Catcher arcade mini-game and collect rewards!</p>
+      </div>
+    </div>
+
+    <section class="install-box">
+      <h2>📥 How to Install on Android</h2>
+      <div class="steps">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <h4>Download APK</h4>
+          <p>Tap <strong>Download Android APK</strong> to get the latest APK from GitHub Releases.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <h4>Open File</h4>
+          <p>Tap the download notification or locate the APK in your device's <em>Files</em> or <em>Downloads</em> folder.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <h4>Allow Source</h4>
+          <p>If prompted by Android, toggle <em>Allow from this source</em> for your browser.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <h4>Install & Play</h4>
+          <p>Tap <strong>Install</strong> and launch PlayTale AI to begin your learning adventure!</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>PlayTale AI • Built with Kotlin & Jetpack Compose • <a href="https://github.com/bsrividya78/playtale-ai-game" target="_blank">GitHub Repository</a></p>
+  </footer>
+
+  <script>
+    // Register PWA Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('PlayTale PWA Service Worker registered with scope:', registration.scope);
+          })
+          .catch((error) => {
+            console.error('PlayTale Service Worker registration failed:', error);
+          });
+      });
+    }
+
+    // PWA Install Prompt handling
+    let deferredPrompt;
+    const installBtn = document.getElementById('pwaInstallBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (installBtn) {
+        installBtn.style.display = 'inline-flex';
+      }
+    });
+
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response to install prompt: ${outcome}`);
+        deferredPrompt = null;
+        installBtn.style.display = 'none';
+      });
+    }
+
+    window.addEventListener('appinstalled', () => {
+      console.log('PlayTale PWA was successfully installed');
+      if (installBtn) installBtn.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "playtale ai",
+  "description": "An engaging educational gamification app with learning zones, interactive quizzes, an AI learning agent, virtual pet Buddy, and coin mini-games.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
